@@ -31,7 +31,7 @@ public class AddProductFragment extends Fragment implements View.OnClickListener
     private RestApi mRestClient = ServiceGenerator.createService(RestApi.class);
 
     private Button scanBtn, saveBtn;
-    private TextView textViewItemName;
+    private EditText textViewItemName;
     private EditText editTextAmount, editTextExpDate;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -41,7 +41,7 @@ public class AddProductFragment extends Fragment implements View.OnClickListener
 
         scanBtn = (Button)root.findViewById(R.id.scan_button);
         saveBtn = (Button)root.findViewById(R.id.buttonSave);
-        textViewItemName = (TextView)root.findViewById(R.id.productName);
+        textViewItemName = (EditText)root.findViewById(R.id.productName);
         editTextAmount = (EditText) root.findViewById(R.id.productAmount);
         editTextExpDate = (EditText) root.findViewById(R.id.editExpirationDate);
         if (!addProductViewModel.getProductName().equals("")){
@@ -76,13 +76,21 @@ public class AddProductFragment extends Fragment implements View.OnClickListener
         IntentResult scanningResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
         if (scanningResult != null) {
             String scanContent = scanningResult.getContents();
-            mRestClient.getIngredientByBarcode(scanContent).enqueue(new Callback<ProductDTO>() {
+            String name = scanContent.split("-")[0];
+            String edate = scanContent.split("-")[1];
+            StringBuffer buf = new StringBuffer(edate);
+            buf.insert(2, '-');
+            buf.insert(5, '-');
+            buf.insert(6, '2');
+            final String newDate = buf.toString();
+            mRestClient.getIngredientByBarcode(name).enqueue(new Callback<ProductDTO>() {
                 @Override
                 public void onResponse(Call<ProductDTO> call, Response<ProductDTO> response) {
                     if (response.isSuccessful()){
                         String name = response.body().getProduct().getProduct_name();
                         addProductViewModel.setProductName(name);
                         textViewItemName.setText(name);
+                        editTextExpDate.setText(newDate);
                     }
                 }
 
