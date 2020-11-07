@@ -6,14 +6,17 @@ import androidx.lifecycle.ViewModel;
 
 public class AddProductViewModel extends ViewModel {
 
-    private MutableLiveData<String> mText;
+    private String productName;
 
     public AddProductViewModel() {
-        mText = new MutableLiveData<>();
-        mText.setValue("This is gallery fragment");
+        productName = "";
     }
 
-    public LiveData<String> getText() {
-        return mText;
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
     }
 }

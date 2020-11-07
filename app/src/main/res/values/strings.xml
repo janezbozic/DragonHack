@@ -12,4 +12,8 @@
     <string name="menu_slideshow">Slideshow</string>
 
     <string name="scan">Scan barcode</string>
+    <string name="item_name">No item</string>
+    <string name="amount_text">Amount:</string>
+    <string name="text_expiration_date">Expiration Date:</string>
+    <string name="save_product_button">Save product</string>
 </resources>

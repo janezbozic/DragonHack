@@ -11,23 +11,115 @@
         android:layout_width="263dp"
         android:layout_height="46dp"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
         android:text="@string/scan"
-        tools:layout_editor_absoluteX="74dp"
-        tools:layout_editor_absoluteY="19dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/scan_format"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textIsSelectable="true"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@id/scan_button" />
+        android:id="@+id/productName"
+        android:layout_width="372dp"
+        android:layout_height="36dp"
+        android:layout_marginTop="28dp"
+        android:text="@string/item_name"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/scan_button" />
+
+    <EditText
+        android:id="@+id/productAmount"
+        android:layout_width="308dp"
+        android:layout_height="41dp"
+        android:layout_marginBottom="512dp"
+        android:ems="10"
+        android:inputType="numberDecimal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.194"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <TextView
-        android:id="@+id/scan_content"
+        android:id="@+id/productAmountText"
+        android:layout_width="211dp"
+        android:layout_height="21dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="16dp"
+        android:text="@string/amount_text"
+        app:layout_constraintBottom_toTopOf="@+id/productAmount"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/productName"
+        app:layout_constraintVertical_bias="0.666" />
+
+    <RadioGroup
+        android:layout_width="74dp"
+        android:layout_height="141dp"
+        android:layout_marginStart="13dp"
+        android:layout_marginLeft="13dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/productAmount"
+        app:layout_constraintTop_toBottomOf="@+id/productName"
+        app:layout_constraintVertical_bias="0.03">
+
+        <RadioButton
+            android:id="@+id/sound"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="g" />
+
+        <RadioButton
+            android:id="@+id/vibration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ml" />
+
+        <RadioButton
+            android:id="@+id/silent"
+            android:layout_width="76dp"
+            android:layout_height="wrap_content"
+            android:text="piece" />
+
+    </RadioGroup>
+
+    <EditText
+        android:id="@+id/editExpirationDate"
+        android:layout_width="301dp"
+        android:layout_height="58dp"
+        android:layout_marginTop="6dp"
+        android:ems="10"
+        android:inputType="date"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.145"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewExpDate"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/textViewExpDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textIsSelectable="true"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@id/scan_format" />
+        android:layout_marginTop="124dp"
+        android:text="@string/text_expiration_date"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.051"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/productAmount" />
+
+    <Button
+        android:id="@+id/buttonSave"
+        android:layout_width="353dp"
+        android:layout_height="49dp"
+        android:layout_marginTop="91dp"
+        android:text="@string/save_product_button"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editExpirationDate"
+        app:layout_constraintVertical_bias="0.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

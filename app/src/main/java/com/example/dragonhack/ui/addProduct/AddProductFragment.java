@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -13,7 +14,6 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.dragonhack.MainActivity;
 import com.example.dragonhack.api.RestApi;
 import com.example.dragonhack.api.ServiceGenerator;
 import com.example.dragonhack.models.dto.ProductDTO;
@@ -30,8 +30,9 @@ public class AddProductFragment extends Fragment implements View.OnClickListener
     private AddProductViewModel addProductViewModel;
     private RestApi mRestClient = ServiceGenerator.createService(RestApi.class);
 
-    private Button scanBtn;
-    private TextView formatTxt, contentTxt;
+    private Button scanBtn, saveBtn;
+    private TextView textViewItemName;
+    private EditText editTextAmount, editTextExpDate;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -39,10 +40,26 @@ public class AddProductFragment extends Fragment implements View.OnClickListener
         View root = inflater.inflate(R.layout.fragment_add_product, container, false);
 
         scanBtn = (Button)root.findViewById(R.id.scan_button);
-        formatTxt = (TextView)root.findViewById(R.id.scan_format);
-        contentTxt = (TextView)root.findViewById(R.id.scan_content);
+        saveBtn = (Button)root.findViewById(R.id.buttonSave);
+        textViewItemName = (TextView)root.findViewById(R.id.productName);
+        editTextAmount = (EditText) root.findViewById(R.id.productAmount);
+        editTextExpDate = (EditText) root.findViewById(R.id.editExpirationDate);
+        if (!addProductViewModel.getProductName().equals("")){
+            textViewItemName.setText(addProductViewModel.getProductName());
+        }
 
         scanBtn.setOnClickListener(this);
+
+        saveBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //TO-DO Tukaj shrani v bazo in toast
+
+                editTextAmount.setText("");
+                editTextExpDate.setText("");
+                textViewItemName.setText("No Item");
+            }
+        });
 
         return root;
     }
@@ -59,17 +76,13 @@ public class AddProductFragment extends Fragment implements View.OnClickListener
         IntentResult scanningResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
         if (scanningResult != null) {
             String scanContent = scanningResult.getContents();
-            String scanFormat = scanningResult.getFormatName();
-            formatTxt.setText("FORMAT: " + scanFormat);
-            contentTxt.setText("CONTENT: " + scanContent);
-            /*Toast toast = Toast.makeText(getActivity(),
-                    "FORMAT: " + scanFormat + "\nCONTENT: " + scanContent, Toast.LENGTH_SHORT);
-            toast.show();*/
             mRestClient.getIngredientByBarcode(scanContent).enqueue(new Callback<ProductDTO>() {
                 @Override
                 public void onResponse(Call<ProductDTO> call, Response<ProductDTO> response) {
                     if (response.isSuccessful()){
-                        System.out.println("response 33: "+ (response.body().getProduct().getProduct_name()));
+                        String name = response.body().getProduct().getProduct_name();
+                        addProductViewModel.setProductName(name);
+                        textViewItemName.setText(name);
                     }
                 }
 
