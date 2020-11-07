@@ -16,9 +16,6 @@ public class ProductDetails {
     @ColumnInfo(name="product_name")
     private String product_name;
 
-    @ColumnInfo(name = "quantity")
-    private int quantity;
-
     @ColumnInfo(name = "expDate")
     private String expDate;
 
@@ -30,8 +27,9 @@ public class ProductDetails {
         this.expDate = expDate;
     }
 
-    public ProductDetails(String product_name){
+    public ProductDetails(String product_name, String expDate){
         this.product_name=product_name;
+        this.expDate = expDate;
     }
 
     public Long getId() {
@@ -48,14 +46,6 @@ public class ProductDetails {
 
     public void setProduct_name(String product_name) {
         this.product_name = product_name;
-    }
-
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
     }
 
 }

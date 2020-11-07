@@ -33,7 +33,7 @@ public class AddProductFragment extends Fragment implements View.OnClickListener
 
     private Button scanBtn, saveBtn;
     private EditText textViewItemName;
-    private EditText editTextAmount, editTextExpDate;
+    private EditText editTextExpDate;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -48,7 +48,6 @@ public class AddProductFragment extends Fragment implements View.OnClickListener
         scanBtn = (Button)root.findViewById(R.id.scan_button);
         saveBtn = (Button)root.findViewById(R.id.buttonSave);
         textViewItemName = (EditText)root.findViewById(R.id.productName);
-        editTextAmount = (EditText) root.findViewById(R.id.productAmount);
         editTextExpDate = (EditText) root.findViewById(R.id.editExpirationDate);
         if (!addProductViewModel.getProductName().equals("")){
             textViewItemName.setText(addProductViewModel.getProductName());
@@ -60,9 +59,9 @@ public class AddProductFragment extends Fragment implements View.OnClickListener
             @Override
             public void onClick(View view) {
                 //TO-DO Tukaj shrani v bazo in toast
-                ProductDetails productDetails = new ProductDetails(textViewItemName.getText().toString());
+                ProductDetails productDetails = new ProductDetails(textViewItemName.getText().toString(), editTextExpDate.getText().toString());
                 addProductViewModel.insertRec(productDetails);
-                editTextAmount.setText("");
+                Toast.makeText(getActivity(), "Product added!", Toast.LENGTH_SHORT).show();
                 editTextExpDate.setText("");
                 textViewItemName.setText("No Item");
             }
@@ -86,10 +85,14 @@ public class AddProductFragment extends Fragment implements View.OnClickListener
             String name = scanContent.split("-")[0];
             String edate = scanContent.split("-")[1];
             StringBuffer buf = new StringBuffer(edate);
-            buf.insert(2, '-');
-            buf.insert(5, '-');
-            buf.insert(6, '2');
-            final String newDate = buf.toString();
+            String buf1 = "";
+            if (edate != null && !edate.equals("")) {
+                buf.insert(2, '.');
+                buf.insert(5, '.');
+                buf.insert(6, '2');
+                buf1 = buf.substring(0, buf.length()-1);
+            }
+            final String newDate = buf1;
             mRestClient.getIngredientByBarcode(name).enqueue(new Callback<ProductDTO>() {
                 @Override
                 public void onResponse(Call<ProductDTO> call, Response<ProductDTO> response) {
@@ -97,7 +100,8 @@ public class AddProductFragment extends Fragment implements View.OnClickListener
                         String name = response.body().getProduct().getProduct_name();
                         addProductViewModel.setProductName(name);
                         textViewItemName.setText(name);
-                        editTextExpDate.setText(newDate);
+                        if (!newDate.equals(""))
+                            editTextExpDate.setText(newDate);
                     }
                 }
 
