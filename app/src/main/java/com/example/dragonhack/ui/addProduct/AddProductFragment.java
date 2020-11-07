@@ -59,7 +59,16 @@ public class AddProductFragment extends Fragment implements View.OnClickListener
             @Override
             public void onClick(View view) {
                 //TO-DO Tukaj shrani v bazo in toast
-                ProductDetails productDetails = new ProductDetails(textViewItemName.getText().toString(), editTextExpDate.getText().toString());
+                String date = editTextExpDate.getText().toString();
+                String [] arr = date.split("[.]");
+                if (arr[0].length() < 2){
+                    arr[0] = "0" + arr[0];
+                }
+                if (arr[1].length() < 2){
+                    arr[1] = "0" + arr[1];
+                }
+                String dateFinal = arr[2] + "-" + arr[1] + "-" + arr[0];
+                ProductDetails productDetails = new ProductDetails(textViewItemName.getText().toString(), dateFinal);
                 addProductViewModel.insertRec(productDetails);
                 Toast.makeText(getActivity(), "Product added!", Toast.LENGTH_SHORT).show();
                 editTextExpDate.setText("");

@@ -6,6 +6,7 @@ import androidx.room.Query;
 
 import com.example.dragonhack.database.entity.ProductDetails;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Dao
@@ -14,7 +15,7 @@ public interface SestavinaDao {
     @Query("SELECT product_name FROM ProductDetails where id = :id")
     String getProduct(Long id);
 
-    @Query("Select * FROM ProductDetails")
+    @Query("Select * FROM ProductDetails order by strftime('%s', expDate) asc")
     List<ProductDetails> getAllProducts();
 
     @Insert
