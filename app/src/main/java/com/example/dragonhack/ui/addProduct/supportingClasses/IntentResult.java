@@ -1,4 +1,4 @@
-package com.example.dragonhack;
+package com.example.dragonhack.ui.addProduct.supportingClasses;
 
 public final class IntentResult {
 

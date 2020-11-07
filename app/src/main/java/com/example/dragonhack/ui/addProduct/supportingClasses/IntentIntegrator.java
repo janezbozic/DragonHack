@@ -1,4 +1,4 @@
-package com.example.dragonhack;
+package com.example.dragonhack.ui.addProduct.supportingClasses;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -17,6 +17,8 @@ import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+
+import androidx.fragment.app.Fragment;
 
 public class IntentIntegrator {
 
@@ -51,6 +53,7 @@ public class IntentIntegrator {
     );
 
     private final Activity activity;
+    public Fragment fragment;
     private String title;
     private String message;
     private String buttonYes;
@@ -58,8 +61,9 @@ public class IntentIntegrator {
     private List<String> targetApplications;
     private final Map<String,Object> moreExtras;
 
-    public IntentIntegrator(Activity activity) {
+    public IntentIntegrator(Activity activity, Fragment fragment) {
         this.activity = activity;
+        this.fragment = fragment;
         title = DEFAULT_TITLE;
         message = DEFAULT_MESSAGE;
         buttonYes = DEFAULT_YES;
@@ -67,78 +71,6 @@ public class IntentIntegrator {
         targetApplications = TARGET_ALL_KNOWN;
         moreExtras = new HashMap<String,Object>(3);
     }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public void setTitleByID(int titleID) {
-        title = activity.getString(titleID);
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public void setMessageByID(int messageID) {
-        message = activity.getString(messageID);
-    }
-
-    public String getButtonYes() {
-        return buttonYes;
-    }
-
-    public void setButtonYes(String buttonYes) {
-        this.buttonYes = buttonYes;
-    }
-
-    public void setButtonYesByID(int buttonYesID) {
-        buttonYes = activity.getString(buttonYesID);
-    }
-
-    public String getButtonNo() {
-        return buttonNo;
-    }
-
-    public void setButtonNo(String buttonNo) {
-        this.buttonNo = buttonNo;
-    }
-
-    public void setButtonNoByID(int buttonNoID) {
-        buttonNo = activity.getString(buttonNoID);
-    }
-
-    public Collection<String> getTargetApplications() {
-        return targetApplications;
-    }
-
-    public final void setTargetApplications(List<String> targetApplications) {
-        if (targetApplications.isEmpty()) {
-            throw new IllegalArgumentException("No target applications");
-        }
-        this.targetApplications = targetApplications;
-    }
-
-    public void setSingleTargetApplication(String targetApplication) {
-        this.targetApplications = Collections.singletonList(targetApplication);
-    }
-
-    public Map<String,?> getMoreExtras() {
-        return moreExtras;
-    }
-
-    public final void addExtra(String key, Object value) {
-        moreExtras.put(key, value);
-    }
-
 
     public final AlertDialog initiateScan() {
         return initiateScan(ALL_CODE_TYPES);
@@ -176,7 +108,7 @@ public class IntentIntegrator {
 
 
     protected void startActivityForResult(Intent intent, int code) {
-        activity.startActivityForResult(intent, code);
+        fragment.startActivityForResult(intent, code);
     }
 
     private String findTargetAppPackage(Intent intent) {
