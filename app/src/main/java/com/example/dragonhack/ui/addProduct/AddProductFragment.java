@@ -83,10 +83,11 @@ public class AddProductFragment extends Fragment implements View.OnClickListener
         if (scanningResult != null) {
             String scanContent = scanningResult.getContents();
             String name = scanContent.split("-")[0];
-            String edate = scanContent.split("-")[1];
-            StringBuffer buf = new StringBuffer(edate);
+
             String buf1 = "";
-            if (edate != null && !edate.equals("")) {
+            if (scanContent.split("-").length > 1) {
+                String edate = scanContent.split("-")[1];
+                StringBuffer buf = new StringBuffer(edate);
                 buf.insert(2, '.');
                 buf.insert(5, '.');
                 buf.insert(6, '2');
