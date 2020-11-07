@@ -16,6 +16,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.dragonhack.api.RestApi;
 import com.example.dragonhack.api.ServiceGenerator;
+import com.example.dragonhack.database.entity.ProductDetails;
 import com.example.dragonhack.models.dto.ProductDTO;
 import com.example.dragonhack.ui.addProduct.supportingClasses.IntentIntegrator;
 import com.example.dragonhack.ui.addProduct.supportingClasses.IntentResult;
@@ -34,9 +35,14 @@ public class AddProductFragment extends Fragment implements View.OnClickListener
     private TextView textViewItemName;
     private EditText editTextAmount, editTextExpDate;
 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        addProductViewModel = new ViewModelProvider(this).get(AddProductViewModel.class);
+    }
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        addProductViewModel = new ViewModelProvider(this).get(AddProductViewModel.class);
         View root = inflater.inflate(R.layout.fragment_add_product, container, false);
 
         scanBtn = (Button)root.findViewById(R.id.scan_button);
@@ -54,7 +60,8 @@ public class AddProductFragment extends Fragment implements View.OnClickListener
             @Override
             public void onClick(View view) {
                 //TO-DO Tukaj shrani v bazo in toast
-
+                ProductDetails productDetails = new ProductDetails(textViewItemName.getText().toString());
+                addProductViewModel.insertRec(productDetails);
                 editTextAmount.setText("");
                 editTextExpDate.setText("");
                 textViewItemName.setText("No Item");
