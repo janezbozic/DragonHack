@@ -13,13 +13,22 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.dragonhack.MainActivity;
+import com.example.dragonhack.api.RestApi;
+import com.example.dragonhack.api.ServiceGenerator;
+import com.example.dragonhack.models.dto.ProductDTO;
 import com.example.dragonhack.ui.addProduct.supportingClasses.IntentIntegrator;
 import com.example.dragonhack.ui.addProduct.supportingClasses.IntentResult;
 import com.example.dragonhack.R;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class AddProductFragment extends Fragment implements View.OnClickListener {
 
     private AddProductViewModel addProductViewModel;
+    private RestApi mRestClient = ServiceGenerator.createService(RestApi.class);
 
     private Button scanBtn;
     private TextView formatTxt, contentTxt;
@@ -53,9 +62,22 @@ public class AddProductFragment extends Fragment implements View.OnClickListener
             String scanFormat = scanningResult.getFormatName();
             formatTxt.setText("FORMAT: " + scanFormat);
             contentTxt.setText("CONTENT: " + scanContent);
-            Toast toast = Toast.makeText(getActivity(),
+            /*Toast toast = Toast.makeText(getActivity(),
                     "FORMAT: " + scanFormat + "\nCONTENT: " + scanContent, Toast.LENGTH_SHORT);
-            toast.show();
+            toast.show();*/
+            mRestClient.getIngredientByBarcode(scanContent).enqueue(new Callback<ProductDTO>() {
+                @Override
+                public void onResponse(Call<ProductDTO> call, Response<ProductDTO> response) {
+                    if (response.isSuccessful()){
+                        System.out.println("response 33: "+ (response.body().getProduct().getProduct_name()));
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ProductDTO> call, Throwable t){
+                    Toast.makeText(getActivity(), "Something went wrong while fetching the details. Problem connecting to server.", Toast.LENGTH_SHORT).show();
+                }
+            });
         } else {
             Toast toast = Toast.makeText(getActivity(),
                     "No scan data received!", Toast.LENGTH_SHORT);

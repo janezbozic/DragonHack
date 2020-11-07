@@ -1,6 +1,6 @@
 package com.example.dragonhack.api;
 
-import com.example.dragonhack.models.dto.TestDTO;
+import com.example.dragonhack.models.dto.ProductDTO;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -10,7 +10,7 @@ public interface RestApi {
 
     //ingredient lookup
     @GET("product/{barcodeId}")
-    Call<TestDTO> getIngredientByBarcode(@Path("barcodeId") String content);
+    Call<ProductDTO> getIngredientByBarcode(@Path("barcodeId") String content);
 
 
 
