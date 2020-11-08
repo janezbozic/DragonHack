@@ -25,7 +25,7 @@ public class AllProductsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         allProductsViewModel =
-                new ViewModelProvider(getActivity()).get(AllProductsViewModel.class);
+                new ViewModelProvider(this).get(AllProductsViewModel.class);
         View root = inflater.inflate(R.layout.fragment_all_products, container, false);
 
         ListView listView = root.findViewById(R.id.productsListView);

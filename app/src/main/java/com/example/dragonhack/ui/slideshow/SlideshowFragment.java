@@ -43,8 +43,8 @@ public class SlideshowFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        slideshowViewModel = new ViewModelProvider(getActivity()).get(SlideshowViewModel.class);
-        allProductsViewModel = new ViewModelProvider(getActivity()).get(AllProductsViewModel.class);
+        slideshowViewModel = new ViewModelProvider(this).get(SlideshowViewModel.class);
+        allProductsViewModel = new ViewModelProvider(this).get(AllProductsViewModel.class);
     }
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
