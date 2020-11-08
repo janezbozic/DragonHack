@@ -71,12 +71,14 @@ public class AddProductFragment extends Fragment implements View.OnClickListener
                 }
                 String dateFinal = arr[2] + "-" + arr[1] + "-" + arr[0];
                 ProductDetails productDetails = new ProductDetails(textViewItemName.getText().toString(), dateFinal);
-                keywords = keywords.substring(1, keywords.length()-2);
+                keywords = addProductViewModel.getKeywords().substring(1, addProductViewModel.getKeywords().length()-2);
                 productDetails.setKeywords(keywords);
                 addProductViewModel.insertRec(productDetails);
                 Toast.makeText(getActivity(), "Product added!", Toast.LENGTH_SHORT).show();
                 editTextExpDate.setText("");
                 textViewItemName.setText("No Item");
+                addProductViewModel.setKeywords("");
+                addProductViewModel.setProductName("");
             }
         });
 
@@ -116,7 +118,7 @@ public class AddProductFragment extends Fragment implements View.OnClickListener
                     }
                     if (response.isSuccessful()){
                         ArrayList<String> keywordi = response.body().getProduct().get_keywords();
-                        keywords=keywordi.toString();
+                        addProductViewModel.setKeywords(keywordi.toString());
                         String name = response.body().getProduct().getProduct_name();
                         addProductViewModel.setProductName(name);
                         textViewItemName.setText(name);

@@ -17,12 +17,22 @@ public class AddProductViewModel extends AndroidViewModel {
     private String productName;
     private TestRepository rep;
     private List<ProductDetails> allProducts;
+    private String keywords;
 
     public AddProductViewModel(Application application) {
         super(application);
         rep = new TestRepository(application);
         allProducts = rep.getAllProducts();
         productName="";
+        keywords = "";
+    }
+
+    public String getKeywords() {
+        return keywords;
+    }
+
+    public void setKeywords(String keywords) {
+        this.keywords = keywords;
     }
 
     public TestRepository getRep() {
