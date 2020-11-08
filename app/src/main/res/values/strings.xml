@@ -9,7 +9,7 @@
 
     <string name="menu_home">Products</string>
     <string name="menu_gallery">Add new product</string>
-    <string name="menu_slideshow">Slideshow</string>
+    <string name="menu_slideshow">Recipes</string>
 
     <string name="scan">Scan barcode</string>
     <string name="item_name">No item</string>

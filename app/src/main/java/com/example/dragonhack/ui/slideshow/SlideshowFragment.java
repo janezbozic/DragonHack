@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,9 +17,13 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.dragonhack.R;
 import com.example.dragonhack.api.recipes.RestApi;
 import com.example.dragonhack.api.recipes.ServiceGenerator;
+import com.example.dragonhack.database.entity.ProductDetails;
+import com.example.dragonhack.models.dto.Hit;
 import com.example.dragonhack.models.dto.IngredientDTO;
 import com.example.dragonhack.models.dto.IngredientsDTO;
 import com.example.dragonhack.models.dto.ProductDTO;
+import com.example.dragonhack.ui.allProducts.AllProductsAdapter;
+import com.example.dragonhack.ui.allProducts.AllProductsViewModel;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -33,51 +38,42 @@ public class SlideshowFragment extends Fragment {
 
     private SlideshowViewModel slideshowViewModel;
     private RestApi mRestClient=new ServiceGenerator().createService(com.example.dragonhack.api.recipes.RestApi.class);
-    private Set<String> ingredients;
+    private AllProductsViewModel allProductsViewModel;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         slideshowViewModel = new ViewModelProvider(getActivity()).get(SlideshowViewModel.class);
-        ingredients=slideshowViewModel.getIngredients();
-        if(slideshowViewModel.getIngredients()==null){
-            ingredients= new HashSet<>();
-            mRestClient.getAllIngredients().enqueue(new Callback<IngredientsDTO>() {
-                @Override
-                public void onResponse(Call<IngredientsDTO> call, Response<IngredientsDTO> response) {
-                    ArrayList<IngredientDTO> ingredientsDto=response.body().getIngredients();
-                    for(IngredientDTO ingredientDTO : ingredientsDto){
-                        ingredients.add(ingredientDTO.getStrIngredient());
-                    }
-                    slideshowViewModel.setIngredients(ingredients);
-                }
-
-                @Override
-                public void onFailure(Call<IngredientsDTO> call, Throwable t){
-                    Toast.makeText(getActivity(), "Something went wrong while fetching the recipes. Problem connecting to server.", Toast.LENGTH_SHORT).show();
-                }
-            });
-        }
-        List<String> keywords=slideshowViewModel.getKeywords();
-        for(int i=0;i<keywords.size();i++){
-            String[] splitString=keywords.get(i).split("[,]");
-            for(int j=0;j<splitString.length;j++){
-                if(ingredients.contains(splitString[j])){
-                    System.out.println(splitString[j]);
-                }
-            }
-        }
+        allProductsViewModel = new ViewModelProvider(getActivity()).get(AllProductsViewModel.class);
     }
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_slideshow, container, false);
-        final TextView textView = root.findViewById(R.id.text_slideshow);
-        slideshowViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
+
+        ListView listView = root.findViewById(R.id.slideshowListView);
+
+        String [] keyW = allProductsViewModel.getAllProducts().get(0).getKeywords().split("[,]");
+
+        String f = keyW[0];
+
+        for (int i = 1; i<keyW.length; i++){
+            if (keyW[i].length() > f.length())
+                f = keyW[i];
+        }
+        mRestClient.getAllIngredients(f).enqueue(new Callback<IngredientDTO>() {
             @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
+            public void onResponse(Call<IngredientDTO> call, Response<IngredientDTO> response) {
+                ArrayList<Hit> hits = response.body().getHits();
+                SlideShowAdapter adapter = new SlideShowAdapter(new ArrayList<Hit>(hits), getContext());
+                listView.setAdapter(adapter);
+            }
+
+            @Override
+            public void onFailure(Call<IngredientDTO> call, Throwable t){
+                Toast.makeText(getActivity(), "Something went wrong while fetching the recipes. Problem connecting to server.", Toast.LENGTH_SHORT).show();
             }
         });
+
         return root;
     }
 }

@@ -3,27 +3,19 @@ package com.example.dragonhack.models.dto;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
+
 public class IngredientDTO {
 
-    @SerializedName("idIngredient")
+    @SerializedName("hits")
     @Expose
-    private String idIngredient;
-    @SerializedName("strIngredient")
-    @Expose
-    private String strIngredient;
-    @SerializedName("strDescription")
-    @Expose
-    private String strDescription;
+    private ArrayList<Hit> hits;
 
-    public String getIdIngredient() {
-        return idIngredient;
+    public ArrayList<Hit> getHits() {
+        return hits;
     }
 
-    public String getStrIngredient() {
-        return strIngredient;
-    }
-
-    public String getStrDescription() {
-        return strDescription;
+    public void setHits(ArrayList<Hit> hits) {
+        this.hits = hits;
     }
 }

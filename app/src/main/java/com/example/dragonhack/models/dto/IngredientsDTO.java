@@ -10,9 +10,9 @@ public class IngredientsDTO {
 
     @SerializedName("meals")
     @Expose
-    private ArrayList<IngredientDTO> ingredients;
+    private IngredientDTO ingredients;
 
-    public ArrayList<IngredientDTO> getIngredients() {
+    public IngredientDTO getIngredients() {
         return ingredients;
     }
 }

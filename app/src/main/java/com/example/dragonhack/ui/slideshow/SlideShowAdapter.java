@@ -1,6 +1,8 @@
-package com.example.dragonhack.ui.allProducts;
+package com.example.dragonhack.ui.slideshow;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,12 +12,13 @@ import android.widget.Toast;
 
 import com.example.dragonhack.R;
 import com.example.dragonhack.database.entity.ProductDetails;
+import com.example.dragonhack.models.dto.Hit;
 
 import java.util.ArrayList;
 
-public class AllProductsAdapter extends ArrayAdapter<ProductDetails>{
+public class SlideShowAdapter extends ArrayAdapter<Hit>{
 
-    private ArrayList<ProductDetails> dataSet;
+    private ArrayList<Hit> dataSet;
     Context mContext;
 
     // View lookup cache
@@ -23,7 +26,7 @@ public class AllProductsAdapter extends ArrayAdapter<ProductDetails>{
         TextView txtName;
     }
 
-    public AllProductsAdapter(ArrayList<ProductDetails> data, Context context) {
+    public SlideShowAdapter(ArrayList<Hit> data, Context context) {
         super(context, R.layout.product_in_list, data);
         this.dataSet = data;
         this.mContext=context;
@@ -35,7 +38,7 @@ public class AllProductsAdapter extends ArrayAdapter<ProductDetails>{
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         // Get the data item for this position
-        ProductDetails dataModel = getItem(position);
+        Hit dataModel = getItem(position);
         // Check if an existing view is being reused, otherwise inflate the view
         ViewHolder viewHolder; // view lookup cache stored in tag
 
@@ -51,14 +54,12 @@ public class AllProductsAdapter extends ArrayAdapter<ProductDetails>{
             viewHolder.txtName.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Toast.makeText(getContext(), dataModel.getProduct_name(), Toast.LENGTH_SHORT).show();
+                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(dataModel.getRecipe().getRecipeUrl()));
+                    getContext().startActivity(browserIntent);
                 }
             });
 
-            String [] arr = dataModel.getExpDate().split("[-]");
-            String date = arr[2] + "." + arr[1] + "." + arr[0];
-
-            viewHolder.txtName.setText(dataModel.getProduct_name() + ": " + date);
+            viewHolder.txtName.setText(dataModel.getRecipe().getRecipeLabel());
 
             result=convertView;
 
