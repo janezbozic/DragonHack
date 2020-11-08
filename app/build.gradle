@@ -37,7 +37,20 @@ dependencies {
     implementation 'androidx.navigation:navigation-ui:2.2.2'
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.2.0'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
+
+    // Retrofit 2
+    implementation 'com.google.code.gson:gson:2.8.6'
+    implementation 'com.squareup.retrofit2:retrofit:2.7.1'
+    implementation 'com.squareup.retrofit2:converter-gson:2.6.2'
+    //Logging interceptor
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.4.0'
+    //Logger
+    implementation 'com.jakewharton.timber:timber:4.7.1'
+    implementation 'androidx.room:room-runtime:2.2.5'
+
+
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+    annotationProcessor 'androidx.room:room-compiler:2.2.5'
 }
