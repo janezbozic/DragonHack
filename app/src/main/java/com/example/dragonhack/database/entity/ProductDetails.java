@@ -19,6 +19,17 @@ public class ProductDetails {
     @ColumnInfo(name = "expDate")
     private String expDate;
 
+    @ColumnInfo(name = "keywords")
+    private String keywords;
+
+    public String getKeywords() {
+        return keywords;
+    }
+
+    public void setKeywords(String keywords) {
+        this.keywords = keywords;
+    }
+
     public String getExpDate() {
         return expDate;
     }

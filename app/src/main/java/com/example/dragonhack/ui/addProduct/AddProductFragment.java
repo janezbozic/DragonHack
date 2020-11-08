@@ -7,20 +7,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.dragonhack.api.RestApi;
-import com.example.dragonhack.api.ServiceGenerator;
+import com.example.dragonhack.api.products.RestApi;
+import com.example.dragonhack.api.products.ServiceGenerator;
 import com.example.dragonhack.database.entity.ProductDetails;
 import com.example.dragonhack.models.dto.ProductDTO;
 import com.example.dragonhack.ui.addProduct.supportingClasses.IntentIntegrator;
 import com.example.dragonhack.ui.addProduct.supportingClasses.IntentResult;
 import com.example.dragonhack.R;
+
+import java.util.ArrayList;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -34,6 +35,7 @@ public class AddProductFragment extends Fragment implements View.OnClickListener
     private Button scanBtn, saveBtn;
     private EditText textViewItemName;
     private EditText editTextExpDate;
+    private String keywords;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -69,6 +71,8 @@ public class AddProductFragment extends Fragment implements View.OnClickListener
                 }
                 String dateFinal = arr[2] + "-" + arr[1] + "-" + arr[0];
                 ProductDetails productDetails = new ProductDetails(textViewItemName.getText().toString(), dateFinal);
+                keywords = keywords.substring(1, keywords.length()-2);
+                productDetails.setKeywords(keywords);
                 addProductViewModel.insertRec(productDetails);
                 Toast.makeText(getActivity(), "Product added!", Toast.LENGTH_SHORT).show();
                 editTextExpDate.setText("");
@@ -106,7 +110,13 @@ public class AddProductFragment extends Fragment implements View.OnClickListener
             mRestClient.getIngredientByBarcode(name).enqueue(new Callback<ProductDTO>() {
                 @Override
                 public void onResponse(Call<ProductDTO> call, Response<ProductDTO> response) {
+                    if(!response.body().getStatus_verbose().equals("product found")){
+                        Toast.makeText(getActivity(), "The scanned product was not found, you can still enter the name and expiration date by hand and save it.", Toast.LENGTH_LONG).show();
+                        return;
+                    }
                     if (response.isSuccessful()){
+                        ArrayList<String> keywordi = response.body().getProduct().get_keywords();
+                        keywords=keywordi.toString();
                         String name = response.body().getProduct().getProduct_name();
                         addProductViewModel.setProductName(name);
                         textViewItemName.setText(name);

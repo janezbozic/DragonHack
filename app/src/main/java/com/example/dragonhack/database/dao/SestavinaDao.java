@@ -15,6 +15,9 @@ public interface SestavinaDao {
     @Query("SELECT product_name FROM ProductDetails where id = :id")
     String getProduct(Long id);
 
+    @Query("SELECT keywords FROM ProductDetails")
+    List<String> getKeywords();
+
     @Query("Select * FROM ProductDetails order by strftime('%s', expDate) asc")
     List<ProductDetails> getAllProducts();
 

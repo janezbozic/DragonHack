@@ -51,6 +51,10 @@ public class TestRepository {
         return sestavinaDao.getProduct(id);
     }
 
+    public List<String> getKeywords(){
+        return sestavinaDao.getKeywords();
+    }
+
     /*public void findProduct(final long id) {
 
         Database.dbWriteExec.execute(new Runnable() {

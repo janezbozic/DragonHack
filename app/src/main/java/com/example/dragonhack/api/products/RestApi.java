@@ -1,4 +1,4 @@
-package com.example.dragonhack.api;
+package com.example.dragonhack.api.products;
 
 import com.example.dragonhack.models.dto.ProductDTO;
 
